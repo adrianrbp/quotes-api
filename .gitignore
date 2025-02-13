@@ -1,4 +1,34 @@
-.venv
-.mypy_cache
-__pycache__
-*.egg-info
+# Ignore Python compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore virtual environments
+env/
+venv/
+.venv/
+ENV/
+.VENV/
+
+# Ignore Django secret and settings files
+*.env
+*.secret
+*.json
+
+
+# Ignore mypy type checking reports
+.mypy_cache/
+
+# Ignore coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+
+# Ignore test output
+nosetests.xml
+coverage/
+*.log
+*.out
+*.err
