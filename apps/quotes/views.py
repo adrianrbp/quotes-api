@@ -1,6 +1,7 @@
 from rest_framework import generics
-from rest_framework.response import Response
+from apps.quotes.models import Quote
+from apps.quotes.serializers import QuoteSerializer
 
-class QuoteListCreateView(generics.GenericAPIView):
-    def get(self, request):
-        return Response([])
+class QuoteListCreateView(generics.ListCreateAPIView):
+    queryset = Quote.objects.all()
+    serializer_class = QuoteSerializer

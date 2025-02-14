@@ -16,6 +16,10 @@ ENV/
 *.json
 
 
+# Ignore database files
+db.sqlite3
+*.db
+
 # Ignore mypy type checking reports
 .mypy_cache/
 
