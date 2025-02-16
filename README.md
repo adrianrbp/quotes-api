@@ -19,18 +19,23 @@ An API for managing and retrieving quotes.
 
 2. **Create a virtual environment:**
    ```sh
-   python -m venv .venv
+   python -m venv .venv # make venv
    source .venv/bin/activate  # Windows: .venv\Scripts\activate
    ```
 
 3. **Install dependencies:**
    ```sh
-   pip install -r requirements.txt
+   make install
    ```
 
 4. **Apply database migrations:**
    ```sh
-   python manage.py migrate
+   make migrate
+   ```
+
+5. **Populate the db with some sample data:**
+   ```sh
+   make seed count=10
    ```
 
 6. **Create a superuser (optional):**
@@ -42,7 +47,7 @@ An API for managing and retrieving quotes.
 
 1. **Start the development server:**
    ```sh
-   python manage.py runserver
+   make serve
    ```
 
 Once the server is running, you can access the API at:
@@ -50,16 +55,33 @@ Once the server is running, you can access the API at:
 
 ### API Endpoints
 - `GET /api/quotes/` - Retrieve all quotes
+- `POST /api/quotes/` - Create a new quote
+- `GET /api/quotes/{id}/` - Retrieve a single quote
+- `PUT /api/quotes/{id}/` - Update a quote
+- `DELETE /api/quotes/{id}/` - Delete a quote
 
 ## Running Tests
 
 1. **Run tests with pytest:**
    ```sh
-   pytest
+   make test
    ```
 
 2. **Generate a coverage report:**
    ```sh
    pytest --cov=quotes
    ```
+
+## Additional Commands
+
+### Run Linter (flake8-like)
+```sh
+make lint
+```
+
+### Format Code (Black-like)
+```sh
+make format
+```
+
 

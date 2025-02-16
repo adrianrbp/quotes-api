@@ -1,0 +1,290 @@
+openapi: 3.0.3
+info:
+  title: Quote Management API
+  version: 1.0.0
+  description: API for managing quotes in a system
+paths:
+  /api/quotes/:
+    get:
+      operationId: quotes_list
+      description: |-
+        API endpoint that allows quotes to be viewed.
+
+        Endpoints:
+        - GET /api/quotes/       -> Retrieve all quotes
+        - POST /api/quotes/      -> Create a new quote
+        - GET /api/quotes/{id}/  -> Retrieve a specific quote
+        - PUT /api/quotes/{id}/  -> Update a quote
+        - DELETE /api/quotes/{id}/ -> Delete a quote
+      tags:
+      - quotes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quote'
+          description: ''
+    post:
+      operationId: quotes_create
+      description: |-
+        API endpoint that allows quotes to be viewed.
+
+        Endpoints:
+        - GET /api/quotes/       -> Retrieve all quotes
+        - POST /api/quotes/      -> Create a new quote
+        - GET /api/quotes/{id}/  -> Retrieve a specific quote
+        - PUT /api/quotes/{id}/  -> Update a quote
+        - DELETE /api/quotes/{id}/ -> Delete a quote
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Quote'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+  /api/quotes/{id}/:
+    get:
+      operationId: quotes_retrieve
+      description: |-
+        API endpoint that allows quotes to be viewed.
+
+        Endpoints:
+        - GET /api/quotes/       -> Retrieve all quotes
+        - POST /api/quotes/      -> Create a new quote
+        - GET /api/quotes/{id}/  -> Retrieve a specific quote
+        - PUT /api/quotes/{id}/  -> Update a quote
+        - DELETE /api/quotes/{id}/ -> Delete a quote
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quote.
+        required: true
+      tags:
+      - quotes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+    put:
+      operationId: quotes_update
+      description: |-
+        API endpoint that allows quotes to be viewed.
+
+        Endpoints:
+        - GET /api/quotes/       -> Retrieve all quotes
+        - POST /api/quotes/      -> Create a new quote
+        - GET /api/quotes/{id}/  -> Retrieve a specific quote
+        - PUT /api/quotes/{id}/  -> Update a quote
+        - DELETE /api/quotes/{id}/ -> Delete a quote
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quote.
+        required: true
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Quote'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+    patch:
+      operationId: quotes_partial_update
+      description: |-
+        API endpoint that allows quotes to be viewed.
+
+        Endpoints:
+        - GET /api/quotes/       -> Retrieve all quotes
+        - POST /api/quotes/      -> Create a new quote
+        - GET /api/quotes/{id}/  -> Retrieve a specific quote
+        - PUT /api/quotes/{id}/  -> Update a quote
+        - DELETE /api/quotes/{id}/ -> Delete a quote
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quote.
+        required: true
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedQuote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedQuote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedQuote'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+    delete:
+      operationId: quotes_destroy
+      description: |-
+        API endpoint that allows quotes to be viewed.
+
+        Endpoints:
+        - GET /api/quotes/       -> Retrieve all quotes
+        - POST /api/quotes/      -> Create a new quote
+        - GET /api/quotes/{id}/  -> Retrieve a specific quote
+        - PUT /api/quotes/{id}/  -> Update a quote
+        - DELETE /api/quotes/{id}/ -> Delete a quote
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this quote.
+        required: true
+      tags:
+      - quotes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/quotes/random/:
+    get:
+      operationId: quotes_random_retrieve
+      description: |-
+        Retrieve a random quote from the database.
+        - Returns a 200 status code with a random quote if available.
+        - Returns a 404 status code with an appropriate message if no quotes exist.
+      tags:
+      - quotes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+components:
+  schemas:
+    PatchedQuote:
+      type: object
+      description: |-
+        Serializer for the Quote model.
+        Transforms Quote instances into JSON and validates input data for API requests.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: string
+          description: The author of the quote.
+          maxLength: 255
+        content:
+          type: string
+          description: The content of the quote.
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp when the quote was created.
+    Quote:
+      type: object
+      description: |-
+        Serializer for the Quote model.
+        Transforms Quote instances into JSON and validates input data for API requests.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: string
+          description: The author of the quote.
+          maxLength: 255
+        content:
+          type: string
+          description: The content of the quote.
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp when the quote was created.
+      required:
+      - author
+      - content
+      - id
+      - timestamp
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

@@ -1,0 +1,18 @@
+[tool.ruff]
+# Use the same line length as Black
+line-length = 88  
+
+# Enable Django-specific linting
+extend-select = ["D", "DJ", "E", "F", "I"]
+
+# Ignore some rules (optional)
+ignore = ["E501"]  # Ignore line length errors (handled by formatter)
+
+[tool.ruff.lint]
+# Enable autofixing
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"  # Use double quotes instead of single
+indent-style = "space"  # Indent with spaces (not tabs)
+line-ending = "lf"  # Use LF instead of CRLF (Windows users)
