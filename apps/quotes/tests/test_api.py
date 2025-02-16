@@ -11,19 +11,18 @@ class TestQuoteAPI:
         assert response.status_code == status.HTTP_200_OK
         json_data = response.json()
 
-        # Validate expected quote data
         assert len(json_data["results"]) == 1
         assert json_data["results"][0]["content"] == quote.content
         assert json_data["results"][0]["author"] == quote.author
 
-    def test_create_quote(self, api_client):
+    def test_create_quote(self, auth_client):
         """Ensure we can create a new quote"""
         new_quote = QuoteFactory.build()
         new_quote_data = {
             "content": new_quote.content,
             "author": new_quote.author,
         }
-        response = api_client.post("/api/quotes/", new_quote_data)
+        response = auth_client.post("/api/quotes/", new_quote_data)
         
         assert response.status_code == status.HTTP_201_CREATED
         assert Quote.objects.count() == 1
@@ -36,18 +35,18 @@ class TestQuoteAPI:
         assert response.status_code == status.HTTP_200_OK
         assert response.data["content"] == quote.content
 
-    def test_update_quote(self, api_client, quote):
+    def test_update_quote(self, auth_client, quote):
         """Ensure we can update a quote"""
         updated_data = {"author": "Updated Author", "content": "Updated Text"}
-        response = api_client.put(f"/api/quotes/{quote.id}/", updated_data)
+        response = auth_client.put(f"/api/quotes/{quote.id}/", updated_data)
 
         assert response.status_code == status.HTTP_200_OK
         quote.refresh_from_db()
         assert quote.author == "Updated Author"
 
-    def test_delete_quote(self, api_client, quote):
+    def test_delete_quote(self, auth_client, quote):
         """Ensure we can delete a quote"""
-        response = api_client.delete(f"/api/quotes/{quote.id}/")
+        response = auth_client.delete(f"/api/quotes/{quote.id}/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Quote.objects.count() == 0
 

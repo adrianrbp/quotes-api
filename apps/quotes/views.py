@@ -1,6 +1,7 @@
 import random
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.pagination import PageNumberPagination
 
 from apps.quotes.models import Quote
@@ -21,6 +22,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
     queryset = Quote.objects.all().order_by('-timestamp')
     serializer_class = QuoteSerializer
     pagination_class = PageNumberPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @action(detail=False, methods=["get"], url_path="random")
     def random_quote(self, request):
