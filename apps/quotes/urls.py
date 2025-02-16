@@ -1,6 +1,10 @@
-from django.urls import path
-from apps.quotes.views import QuoteListCreateView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from apps.quotes.views import QuoteViewSet
+
+router = DefaultRouter()
+router.register(r'quotes', QuoteViewSet, basename='quote')
 
 urlpatterns = [
-    path("quotes/", QuoteListCreateView.as_view(), name="quote-list"),
+    path('', include(router.urls)),
 ]

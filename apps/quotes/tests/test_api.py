@@ -26,3 +26,9 @@ class TestQuoteAPI:
         assert Quote.objects.count() == 1
         assert Quote.objects.first().content == new_quote_data["content"]
         assert Quote.objects.first().author == new_quote_data["author"]
+
+    def test_retrieve_quote(self, api_client, quote):
+        """Ensure we can retrieve a single quote by ID"""
+        response = api_client.get(f"/api/quotes/{quote.id}/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["content"] == quote.content
