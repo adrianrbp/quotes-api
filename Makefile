@@ -7,7 +7,7 @@ migrate:
 	python manage.py migrate
 
 # Run the development server
-runserver:
+serve:
 	python manage.py runserver
 
 # Open Django shell
