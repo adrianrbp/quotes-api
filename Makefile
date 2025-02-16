@@ -17,3 +17,6 @@ shell:
 # Install dependencies
 install:
 	pip install -r requirements.txt
+
+gendocs:
+	python manage.py spectacular --color --file schema.yaml
