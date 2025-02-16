@@ -57,3 +57,10 @@ class TestQuoteAPI:
         assert response.status_code == status.HTTP_200_OK
         assert "author" in response.json()
         assert "content" in response.json()
+
+    def test_random_quote_no_quotes(self, api_client):
+        """Ensure the API returns 'No quotes available' when no quotes exist."""
+        response = api_client.get(f"/api/quotes/random/")
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.data["error"] == "No quotes available"
