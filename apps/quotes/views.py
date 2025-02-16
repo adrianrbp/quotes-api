@@ -8,6 +8,7 @@ class QuoteListCreateView(generics.ListCreateAPIView):
 
     Endpoints:
     - GET /api/quotes/       -> Retrieve all quotes
+    - POST /api/quotes/      -> Create a new quote
     """
     queryset = Quote.objects.all()
     serializer_class = QuoteSerializer
