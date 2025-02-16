@@ -30,3 +30,15 @@ install:
 # Generate Swagger Documentation
 gendocs:
 	python manage.py spectacular --color --file schema.yaml
+
+# Run Ruff linter (like flake8)
+lint:
+	ruff check .
+
+# Format code with Ruff (like black)
+format:
+	ruff format .
+
+# Run both linting and formatting
+lint-fix:
+	ruff check . --fix

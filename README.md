@@ -72,3 +72,16 @@ Once the server is running, you can access the API at:
    pytest --cov=quotes
    ```
 
+## Additional Commands
+
+### Run Linter (flake8-like)
+```sh
+make lint
+```
+
+### Format Code (Black-like)
+```sh
+make format
+```
+
+
