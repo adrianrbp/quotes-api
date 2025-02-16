@@ -1,6 +1,6 @@
 import pytest
 from rest_framework.test import APIClient
-from apps.quotes.models import Quote
+from apps.quotes.tests.factories import QuoteFactory
 
 @pytest.fixture
 def api_client():
@@ -10,7 +10,4 @@ def api_client():
 @pytest.fixture
 def quote(db):
     """Creates a test quote"""
-    return Quote.objects.create(
-            content="The only limit to our realization of tomorrow is our doubts of today.",
-            author="Franklin D. Roosevelt"
-        )
+    return QuoteFactory()
