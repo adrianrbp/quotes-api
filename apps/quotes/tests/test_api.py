@@ -9,9 +9,12 @@ class TestQuoteAPI:
         """Ensure we can retrieve a list of quotes"""
         response = api_client.get("/api/quotes/")
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 1
-        assert response.data[0]["content"] == quote.content
-        assert response.data[0]["author"] == quote.author
+        json_data = response.json()
+
+        # Validate expected quote data
+        assert len(json_data["results"]) == 1
+        assert json_data["results"][0]["content"] == quote.content
+        assert json_data["results"][0]["author"] == quote.author
 
     def test_create_quote(self, api_client):
         """Ensure we can create a new quote"""
@@ -72,3 +75,28 @@ class TestQuoteAPI:
         assert data["status"] == 404
         assert data["message"] == "No quotes available"
         assert data["data"] is None
+
+    def test_quotes_pagination(self, api_client):
+        """Ensure that pagination is applied when listing quotes."""
+        QuoteFactory.create_batch(15)
+
+        response = api_client.get("/api/quotes/")
+
+        assert response.status_code == status.HTTP_200_OK
+        json_data = response.json()
+
+        assert "count" in json_data
+        assert "next" in json_data
+        assert "previous" in json_data
+        assert "results" in json_data
+        assert len(json_data["results"]) == 10
+        assert json_data["next"] is not None
+
+
+        next_page_response = api_client.get(json_data["next"])
+        assert next_page_response.status_code == status.HTTP_200_OK
+        next_page_data = next_page_response.json()
+
+        assert len(next_page_data["results"]) == 5
+        assert next_page_data["next"] is None  # No third page
+        assert next_page_data["previous"] is not None

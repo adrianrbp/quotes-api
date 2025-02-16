@@ -1,6 +1,8 @@
 import random
-from rest_framework.decorators import action
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
+
 from apps.quotes.models import Quote
 from apps.quotes.serializers import QuoteSerializer
 from apps.quotes.utils.responses import api_response
@@ -18,6 +20,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
     """
     queryset = Quote.objects.all().order_by('-timestamp')
     serializer_class = QuoteSerializer
+    pagination_class = PageNumberPagination
 
     @action(detail=False, methods=["get"], url_path="random")
     def random_quote(self, request):
