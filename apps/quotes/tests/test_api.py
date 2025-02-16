@@ -32,3 +32,18 @@ class TestQuoteAPI:
         response = api_client.get(f"/api/quotes/{quote.id}/")
         assert response.status_code == status.HTTP_200_OK
         assert response.data["content"] == quote.content
+
+    def test_update_quote(self, api_client, quote):
+        """Ensure we can update a quote"""
+        updated_data = {"author": "Updated Author", "content": "Updated Text"}
+        response = api_client.put(f"/api/quotes/{quote.id}/", updated_data)
+
+        assert response.status_code == status.HTTP_200_OK
+        quote.refresh_from_db()
+        assert quote.author == "Updated Author"
+
+    def test_delete_quote(self, api_client, quote):
+        """Ensure we can delete a quote"""
+        response = api_client.delete(f"/api/quotes/{quote.id}/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert Quote.objects.count() == 0
