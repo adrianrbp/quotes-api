@@ -52,15 +52,23 @@ class TestQuoteAPI:
         """Ensure we can retrieve a random quote"""
         QuoteFactory.create_batch(5)
 
-        response = api_client.get(f"/api/quotes/random/")
+        response = api_client.get("/api/quotes/random/")
 
         assert response.status_code == status.HTTP_200_OK
-        assert "author" in response.json()
-        assert "content" in response.json()
+        data = response.json()
+        assert data["status"] == 200
+        assert data["message"] == "Random quote retrieved successfully"
+        assert "data" in data
+        assert "id" in data["data"]
+        assert "author" in data["data"]
+        assert "content" in data["data"]
 
     def test_random_quote_no_quotes(self, api_client):
         """Ensure the API returns 'No quotes available' when no quotes exist."""
-        response = api_client.get(f"/api/quotes/random/")
+        response = api_client.get("/api/quotes/random/")
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.data["error"] == "No quotes available"
+        data = response.json()
+        assert data["status"] == 404
+        assert data["message"] == "No quotes available"
+        assert data["data"] is None
