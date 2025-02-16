@@ -21,7 +21,7 @@ serve:
 
 # Open Django shell
 shell:
-	python manage.py shell
+	python manage.py shell_plus
 
 # Install dependencies
 install:
