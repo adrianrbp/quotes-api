@@ -133,6 +133,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # Throttle for unauthenticated users
+        'rest_framework.throttling.UserRateThrottle',  # Throttle for authenticated users
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',   # Max 5 requests per day for anonymous users
+        'user': '20/hour', # Max 20 requests per hour for authenticated users
+    },
 }
 
 SPECTACULAR_SETTINGS = {

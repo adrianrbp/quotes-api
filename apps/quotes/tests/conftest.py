@@ -1,7 +1,9 @@
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from apps.quotes.tests.factories import QuoteFactory
+
 
 @pytest.fixture
 def api_client():
@@ -23,3 +25,8 @@ def auth_client(api_client, user):
     """Authenticates the client with the test user"""
     api_client.force_authenticate(user=user)
     return api_client
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    """Clears the cache before each test to reset throttling."""
+    cache.clear()
