@@ -13,7 +13,6 @@ ignore = ["E501"]  # Ignore line length errors (handled by formatter)
 fixable = ["ALL"]
 
 [tool.ruff.format]
-# Use Ruff as a formatter (Black replacement)
 quote-style = "double"  # Use double quotes instead of single
 indent-style = "space"  # Indent with spaces (not tabs)
 line-ending = "lf"  # Use LF instead of CRLF (Windows users)
