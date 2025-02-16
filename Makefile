@@ -1,3 +1,8 @@
+
+venv:
+	python -m venv .venv
+	@echo "Run 'source .venv/bin/activate' on Linux/Mac or '.venv\Scripts\activate' on Windows"
+
 # Run tests with pytest
 test:
 	pytest --tb=short
@@ -5,6 +10,10 @@ test:
 # Apply database migrations
 migrate:
 	python manage.py migrate
+
+# Populate the db with n quotes
+seed:
+	python manage.py seed --count=$(count)
 
 # Run the development server
 serve:
@@ -18,5 +27,6 @@ shell:
 install:
 	pip install -r requirements.txt
 
+# Generate Swagger Documentation
 gendocs:
 	python manage.py spectacular --color --file schema.yaml
