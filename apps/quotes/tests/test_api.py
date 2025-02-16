@@ -47,3 +47,13 @@ class TestQuoteAPI:
         response = api_client.delete(f"/api/quotes/{quote.id}/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Quote.objects.count() == 0
+
+    def test_get_random_quote(self, api_client):
+        """Ensure we can retrieve a random quote"""
+        QuoteFactory.create_batch(5)
+
+        response = api_client.get(f"/api/quotes/random/")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert "author" in response.json()
+        assert "content" in response.json()
