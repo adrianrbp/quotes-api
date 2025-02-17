@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'oauth2_provider',
     'rest_framework',
     'drf_spectacular',
     'apps.quotes',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +134,11 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        # 'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',  # Throttle for unauthenticated users
         'rest_framework.throttling.UserRateThrottle',  # Throttle for authenticated users

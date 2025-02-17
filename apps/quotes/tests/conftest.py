@@ -7,6 +7,7 @@ from apps.quotes.tests.factories import QuoteFactory
 
 @pytest.fixture
 def api_client():
+    """Fixture for API client"""
     return APIClient()
 
 @pytest.fixture
