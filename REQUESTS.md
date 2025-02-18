@@ -234,3 +234,25 @@ curl -X DELETE http://127.0.0.1:8000/api/quotes/32/ \
 
 **Expected Response (204 No Content, Quote Deleted Successfully):**  
 No response body.
+
+
+### **10. Retrieve a random Quote** (GET)
+
+```sh
+curl -X GET http://127.0.0.1:8000/api/quotes/random/ | jq
+```
+
+**Expected Response (200 OK):**
+```json
+{
+  "status": 200,
+  "message": "Random quote retrieved successfully",
+  "data": {
+    "id": 27,
+    "author": "Gina Sullivan",
+    "content": "Act behavior produce son attention local serve.",
+    "timestamp": "2025-02-16T16:50:42.979471Z"
+  }
+}
+
+```

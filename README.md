@@ -59,6 +59,7 @@ Once the server is running, you can access the API at:
 - `GET /api/quotes/{id}/` - Retrieve a single quote
 - `PUT /api/quotes/{id}/` - Update a quote
 - `DELETE /api/quotes/{id}/` - Delete a quote
+- `GET /api/quotes/random` - Retrieve a random quote
 
 - [Sample Usage in Curl](REQUESTS.md)
 
