@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'oauth2_provider',
     'rest_framework',
     'drf_spectacular',
     'apps.quotes',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "oauth2_provider.middleware.OAuth2TokenMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -130,6 +133,31 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        # 'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # Throttle for unauthenticated users
+        'rest_framework.throttling.UserRateThrottle',  # Throttle for authenticated users
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',   # Max 5 requests per day for anonymous users
+        'user': '20/hour', # Max 20 requests per hour for authenticated users
+    },
+}
+
+OAUTH2_PROVIDER = {
+    "ACCESS_TOKEN_EXPIRE_SECONDS": 3600,
+    "ALLOWED_GRANT_TYPES": ["password", "client_credentials", "authorization_code", "refresh_token"],
+    "OAUTH2_BACKEND_CLASS": "oauth2_provider.oauth2_backends.OAuthLibCore",
+    "SCOPES": {
+        "read": "Read scope",
+        "write": "Write scope"
+    }
 }
 
 SPECTACULAR_SETTINGS = {
@@ -137,4 +165,38 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API for managing quotes in a system",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    'SWAGGER_UI_SETTINGS': {
+        'oauth2RedirectUrl': '/oauth2-redirect/',
+    },
+    'SECURITY_DEFINITIONS': {
+        'OAuth2': {
+            'type': 'oauth2',
+            'flows': {
+                'password': {
+                    'tokenUrl': '/api/oauth/token/',
+                    'refreshUrl': '/api/oauth/token/',
+                    'scopes': {'read': 'Read access', 'write': 'Write access'},
+                }
+            },
+        }
+    },
+    'SECURITY': [{'oauth2': []}],
+    "AUTHENTICATION_CLASSES": ["oauth2_provider.contrib.rest_framework.OAuth2Authentication"],
+
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'oauth2_provider': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
 }

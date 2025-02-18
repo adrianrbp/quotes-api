@@ -16,20 +16,24 @@ paths:
         - GET /api/quotes/{id}/  -> Retrieve a specific quote
         - PUT /api/quotes/{id}/  -> Update a quote
         - DELETE /api/quotes/{id}/ -> Delete a quote
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
       tags:
       - quotes
       security:
-      - cookieAuth: []
-      - basicAuth: []
+      - oauth2: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Quote'
+                $ref: '#/components/schemas/PaginatedQuoteList'
           description: ''
     post:
       operationId: quotes_create
@@ -57,9 +61,7 @@ paths:
               $ref: '#/components/schemas/Quote'
         required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - oauth2: []
       responses:
         '201':
           content:
@@ -89,8 +91,7 @@ paths:
       tags:
       - quotes
       security:
-      - cookieAuth: []
-      - basicAuth: []
+      - oauth2: []
       - {}
       responses:
         '200':
@@ -132,9 +133,7 @@ paths:
               $ref: '#/components/schemas/Quote'
         required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - oauth2: []
       responses:
         '200':
           content:
@@ -174,9 +173,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedQuote'
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - oauth2: []
       responses:
         '200':
           content:
@@ -205,9 +202,7 @@ paths:
       tags:
       - quotes
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - oauth2: []
       responses:
         '204':
           description: No response body
@@ -221,8 +216,7 @@ paths:
       tags:
       - quotes
       security:
-      - cookieAuth: []
-      - basicAuth: []
+      - oauth2: []
       - {}
       responses:
         '200':
@@ -231,8 +225,76 @@ paths:
               schema:
                 $ref: '#/components/schemas/Quote'
           description: ''
+  /api/users/register/:
+    post:
+      operationId: users_register_create
+      description: Creates a new user account.
+      summary: User Registration
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - oauth2: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                example:
+                  status: success
+                  data:
+                    id: 1
+                    username: newuser
+                    email: newuser@example.com
+                  message: User registered successfully. Please log in to get your
+                    token.
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                examples:
+                - status: error
+                  message: Validation error
+                  errors: null
+          description: ''
 components:
   schemas:
+    PaginatedQuoteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Quote'
     PatchedQuote:
       type: object
       description: |-
@@ -280,11 +342,31 @@ components:
       - content
       - id
       - timestamp
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - id
+      - password
+      - username
   securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: sessionid
+    oauth2:
+      type: oauth2
+      flows: {}
