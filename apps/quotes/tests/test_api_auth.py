@@ -11,20 +11,20 @@ class TestQuoteAuthentication:
         payload = {"author": "Test Author", "content": "Test Content"}
         response = api_client.post("/api/quotes/", payload)
 
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_update_quote_requires_authentication(self, api_client, quote):
         """Ensure an unauthenticated user cannot update a quote."""
         updated_data = {"author": "Updated Author", "content": "Updated Content"}
         response = api_client.put(f"/api/quotes/{quote.id}/", updated_data)
 
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_delete_quote_requires_authentication(self, api_client, quote):
         """Ensure an unauthenticated user cannot delete a quote."""
         response = api_client.delete(f"/api/quotes/{quote.id}/")
 
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
     def test_authenticated_user_can_create_quote(self, auth_client):
