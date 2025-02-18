@@ -9,15 +9,32 @@ def api_client():
     return APIClient()
 
 @pytest.fixture
-def test_application(db):
-    """Fixture to create an OAuth2 Application"""
-    return Application.objects.create(
+def oauth_client(db, test_user):
+    """Creates an OAuth2 application"""
+    # test_client_id = "test-client-id"
+    # test_client_secret = "test-client-secret"
+    
+    # return Application.objects.create(
+    #     name="TestApp",
+    #     client_type=Application.CLIENT_CONFIDENTIAL,
+    #     authorization_grant_type=Application.GRANT_PASSWORD,
+    #     user=test_user
+    # )
+    application = Application.objects.create(
         name="TestApp",
         client_type=Application.CLIENT_CONFIDENTIAL,
         authorization_grant_type=Application.GRANT_PASSWORD,
-        client_id="test_client_id",
-        client_secret="test_client_secret"
+        user=test_user
     )
+    
+    # Store the plain-text secret before it is hashed
+    application.raw_client_secret = "test-client-secret"
+    
+    # Manually set the client_secret to avoid hashing issues
+    application.client_secret = application.raw_client_secret
+    application.save()
+
+    return application
 
 @pytest.fixture
 def test_user(db):

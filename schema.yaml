@@ -26,7 +26,7 @@ paths:
       tags:
       - quotes
       security:
-      - tokenAuth: []
+      - oauth2: []
       - {}
       responses:
         '200':
@@ -61,7 +61,7 @@ paths:
               $ref: '#/components/schemas/Quote'
         required: true
       security:
-      - tokenAuth: []
+      - oauth2: []
       responses:
         '201':
           content:
@@ -91,7 +91,7 @@ paths:
       tags:
       - quotes
       security:
-      - tokenAuth: []
+      - oauth2: []
       - {}
       responses:
         '200':
@@ -133,7 +133,7 @@ paths:
               $ref: '#/components/schemas/Quote'
         required: true
       security:
-      - tokenAuth: []
+      - oauth2: []
       responses:
         '200':
           content:
@@ -173,7 +173,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedQuote'
       security:
-      - tokenAuth: []
+      - oauth2: []
       responses:
         '200':
           content:
@@ -202,7 +202,7 @@ paths:
       tags:
       - quotes
       security:
-      - tokenAuth: []
+      - oauth2: []
       responses:
         '204':
           description: No response body
@@ -216,7 +216,7 @@ paths:
       tags:
       - quotes
       security:
-      - tokenAuth: []
+      - oauth2: []
       - {}
       responses:
         '200':
@@ -228,7 +228,7 @@ paths:
   /api/users/register/:
     post:
       operationId: users_register_create
-      description: Creates a new user and returns an authentication token.
+      description: Creates a new user account.
       summary: User Registration
       tags:
       - users
@@ -245,7 +245,7 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - tokenAuth: []
+      - oauth2: []
       - {}
       responses:
         '201':
@@ -253,10 +253,22 @@ paths:
             application/json:
               schema:
                 example:
-                  id: 1
-                  username: newuser
-                  email: newuser@example.com
-                  token: abc123xyz
+                  status: success
+                  data:
+                    id: 1
+                    username: newuser
+                    email: newuser@example.com
+                  message: User registered successfully. Please log in to get your
+                    token.
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                examples:
+                - status: error
+                  message: Validation error
+                  errors: null
           description: ''
 components:
   schemas:
@@ -358,8 +370,3 @@ components:
     oauth2:
       type: oauth2
       flows: {}
-    tokenAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: Token-based authentication with required prefix "Token"

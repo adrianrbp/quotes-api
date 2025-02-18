@@ -25,3 +25,22 @@ class TestUserAuthentication:
         assert response.status_code == 400
         assert response.data["status"] == "error"
         assert response.data["message"] == "Validation error"
+
+    def test_login_oauth(self, api_client, oauth_client, test_user):
+        """Test obtaining an access token using OAuth2 password grant"""
+        test_user.set_password("password123")
+        test_user.save()
+
+        response = api_client.post("/api/oauth/token/", data={
+            "grant_type": "password",
+            "username": test_user.username,
+            "password": "password123",
+            "client_id": oauth_client.client_id,
+            "client_secret": oauth_client.raw_client_secret,
+        })
+        
+        assert response.status_code == 200
+        json_data = response.json()
+        assert "access_token" in json_data
+        assert "refresh_token" in json_data
+        assert json_data["token_type"] == "Bearer"

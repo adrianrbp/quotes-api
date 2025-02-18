@@ -7,6 +7,9 @@ venv:
 test:
 	pytest --tb=short
 
+show_urls:
+	python manage.py show_urls
+
 # Apply database migrations
 migrate:
 	python manage.py migrate
