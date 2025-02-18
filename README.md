@@ -60,6 +60,8 @@ Once the server is running, you can access the API at:
 - `PUT /api/quotes/{id}/` - Update a quote
 - `DELETE /api/quotes/{id}/` - Delete a quote
 
+- [Sample Usage in Curl](REQUESTS.md)
+
 ## Running Tests
 
 1. **Run tests with pytest:**
